@@ -148,7 +148,79 @@
 
 ★ vim环境设置与记录：~/.vimrc,~/.viminfo
 
+​	vim的环境设置可以写入在~/.vimrc文件中
+
+​	可以使用iconv进行文件语系编码的转换
+
 ​	--P304
+
+★ 认识BASH这个Shell
+
+ - 名词：
+
+   - shell(壳程序)
+   - sh(Bourne shell)
+   - C shell
+   - K shell
+   - TCSH
+   - bash(Bourne Again SHell)：Bourne shell的增强版本，也是基于GNU的架构下发展出来的
+
+- 命令别名设置功能：(alias)
+
+  ```bash
+  alias lm='ls -al'
+  ```
+
+- 查询命令是否为Bash shell的内置命令：type
+
+  ```bash
+  type [-tpa] name -- p315
+  ```
+
+  type主要在找出执行文件而不是一般文件名
+
+- 组合键：
+
+  - [ctrl]+u/[ctrl]+k：分别是从光标处向前删除命令串([ctrl]+u)及向后删除命令串([ctrl]+k)
+  - [ctrl]+a/[ctrl]+e：分别是让光标移动到整个命令串的最前面([ctrl]+a)或最后面([ctrl]+e)
+
+- 变量的使用与设置：echo，变量设置规则，unset
+
+  - 变量的设置规则
+
+    - 变量与变量内容以一个等号【=】来连接
+
+    - 等号两边不能直接接空格
+
+    - 变量名称只能是英文字母与数字，但是开头字符不能是数字
+
+    - 变量内容若有空格可使用双引号【"】或单引号【'】将变量内容结合起来：**双引号内的特殊字符如$等，可以保留原有的特性**
+
+      ```bash
+      var="lang is $LANG"则echo $var可得lang is zh_CN.UTF-8
+      ```
+
+    - 单引号内的特殊字符则仅为一般字符（纯文本）
+
+      ```bash
+      var='lang is $LANG'则echo $var可得lang is $LANG
+      ```
+
+    - 可用转义符【\】将特殊符号（如[Enter]，$，\，空格，'等）变成一般字符
+
+    - 在一串命令的执行中，还需要借由其他额外的命令所提供的信息时，可以使用返单引号【\`命令\`】或【$(命令)】
+
+    - 若该变量为扩增变量内容时，则可用"$变量名称"或${变量}累加内容
+
+      ```bash
+      PATH="$PATH":/home/bin或PATH=${PATH}:/home/bin或PATH="${PATH}":/home/bin
+      ```
+
+    - 若该变量需要在其他子程序执行，则需要以export来使变量变成环境变量
+
+    - 通常大写字符为系统默认变量，自行设置变量可以使用小写字符，方便判断
+
+    - 取消变量的方法为使用unset：【unset变量名称】
 
 ---
 
