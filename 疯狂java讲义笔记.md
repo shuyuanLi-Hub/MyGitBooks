@@ -281,7 +281,7 @@ true表示真；false表示假。
   {
   	//循环体
       [迭代语句]
-}
+  }
   ```
 
   程序判断循环条件，如果循环条件为true，执行循环条件；循环体执行完成后，再次判断循环条件，如果循环条件为true，执行循环体，直到最后一次判断，循环条件为false，结束循环。
@@ -527,7 +527,6 @@ true表示真；false表示假。
     
     [难点]：要保证递归一定能出现递归结束的条件
     $$
-    
   
 * 方法重载(overload)：
 
@@ -818,7 +817,7 @@ var CompanyName = ……
 * 初始化块：
 
   * ```java
-  [修饰符]{
+    [修饰符]{
     	各种语句
     }
     ```
@@ -1090,6 +1089,108 @@ var CompanyName = ……
 
         * 匿名内部类不能是抽象类，因此必须实现抽象父类或接口中所有抽象方法
 
+* Java的入口方法：
+
+    * ```
+        public static void main(String[] args)
+        --该方法由JVM负责调用
+        
+        -String[] args -- 这个数组用于接收用户输入的参数
+        ```
+
+* Scanner
+
+    * 获取各种输入
+    * nextXxx(): 获取下一个整数，浮点数，行......
+
+* System 与 Runtime
+
+    * 要获取操作系统相关的属性，通过System
+
+    * 要获取JVM环境相关的信息，通过Runtime
+
+    * System的类变量：
+
+        * in：代表键盘
+        * out：代表屏幕
+        * System的所有方法都是类方法，因此无需创建实例
+        * currentTimeMillis()：获取当前时间。从1970年月1日0时0分0秒到现在经过了多少毫秒
+        * exit(int status)：退出JVM
+        * getenv()：获取所有环境变量
+        * getenv(String name)：获取指定环境变量
+        * getProperties()：获取所有系统属性
+        * getProperty(String name)：获取指定系统属性
+
+    * Runtime代表JVM运行时环境
+
+        * Runtime只需要一个实例，应该采用单例模式
+
+        * ```java
+            static Runtime getRuntime() //用于获取RunTime的单例对象。
+            ```
+
+        * freeMemory()：空闲堆内存
+
+        * maxMemory()：最大堆内存
+
+        * totalMemory()：总是用堆内存
+
+        * exec(String commond)：运行操作系统上的程序
+
+* Object
+
+    * 它是一切类的父类
+    * 通常有三个需要被重写的方法
+    * toString()：返回该对象的描述字符串
+    * equals(Object obj)：根据业务规则，提供判断两个对象相等的标准
+    * hashCode()
+
+* Objects
+
+    * Arrays：操作数组的工具类
+    * Objects：操作对象的工具类，该类的工具方法可以避免NullPointerException
+
+* 字符串
+
+    * Java的字符串有三个：
+        * String：代表了字符内容不能改变的字符串
+        * StringBuffer：代表字符内容可变的字符串，它是线程安全的，性能较差
+        * StringBuilder：代表字符内容可变的字符串，线程不安全，性能较好
+
+* Math：
+
+* Random和ThreadLocalRandom
+
+    * Random是普通的随机数生成器
+    * ThreadLocalRandom是当前线程的随机数生成器
+
+* BigDecimal：精确小数
+
+    * 对于float，double两个类型而言，它们保存的小数可能不精确--所有语言都是这样。
+    * 因此如果要比较两个浮点数是否相等，通常计算它们的差，如果差小于一个极小的数，即可认为它们相等。如果确实需要精确保存小数的值，就需要使用BigDecimal。
+
+* Date：代表日期时间
+
+    * Date大部分构造器，方法都已经过时了
+    * Date()：获取当前时间
+    * Date(long date)：负责将currentTimeMillis()返回的long型时间转换成Date对象
+    * getTime()：返回long型的时间(获取currentTimeMillis()所返回的时间)
+
+* Calendar：代表日期时间
+
+    * 被设计出来取代Date的
+    * Calendar采用了模板设计，Calendar是一个抽象类，因此实际使用的通常是子类。
+    * 原本是希望世界上不同的日历都继承Calendar来派生子类
+    * Java为Calendar提供了一个子类：GregorianCalendar：公历
+    * 获取实例
+        * Calendar.getInstance()
+    * 获取指定字段(年，月，日....)的值：对象.get(Field名)
+    * 设置指定字段(年，月，日....)的值：对象.set(Field名，值)
+        * mutable：可变的
+        * immutable：不可变的
+    * 在指定字段(年，月，日....)上添加值：对象.add(Field名，值)
+    * getTime()：该方法用于获取该Calendar对应的Date对象。
+
 * Lambda表达式
 
     * 函数式接口：只有一个抽象方法的接口
@@ -1195,6 +1296,7 @@ var CompanyName = ……
   * 序列化：transient
   * native：修饰方法，用于使用C/C++调用底层平台的API来实现该方法
   * <dfn>strictfp</dfn>：严格浮点数，可修饰类、接口、枚举、方法，用于保证Java会严格按照浮点数的规范来计算
+  
 * jar命令
   * 对于实际的Java项目部署时，通常都会打包成”压缩包(归档文件)“
   * 在Java领域中，通常有如下三种压缩包(格式完全一样，只是后缀不同)
