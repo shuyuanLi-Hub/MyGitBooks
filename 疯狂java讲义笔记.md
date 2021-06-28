@@ -1304,7 +1304,68 @@ var CompanyName = ……
     * war：完整web应用的压缩包
     * ear：通常是企业级项目的压缩包，一般会包括EJB的jar包和Web部分的war包
 
-  
+* 正则表达式(regular expression)
+
+    * 一种工具，绝大部分好的语言都应支持正则表达式
+    * 是一个“字符串模板”，可以代表一批字符串
+    * 通配符，每个通配符都只能代表一个字符
+        * .：代表任意一个字符
+        * \d：代表任意一个数字   digit
+        * \D：代表任意一个非数字
+        * \w：代表任意一个单词字符    word
+        * \W：代表任意一个非单词字符
+        * \s：代表任意一个空白    space
+        * \S：代表任意一个非空白字符
+        * [a-d]：范围
+        * [amd]：枚举
+        * [amd1-6]：混合
+        * [^a-d]：求否
+        * [a-g&&[<code>^</code>c-e]]：求与
+    * 出现频率
+        * ？：前面的字符出现0~1次
+        * *：前面的字符出现0~N次
+        * +：前面的字符出现1~N次
+        * {m,n}：前面的字符出现m~n次
+        * {m,}：前面的字符出现m~无限次
+        * {,n}：前面的字符出现0~n次
+        * {n}：前面的字符出现n次
+        * ^：开头
+        * $：结尾
+    * 成组
+        * (abc){1,2}：可代表：abc、abcabc
+        * ((abc)|(123))*：可代表""、abc123
+    * Java对正则表达式的支持
+        * String类
+            * matches(regex)：判断该字符串是否匹配正则表达式
+            * split(regex)：根据指定分隔符将字符串分割成多段
+            * replaceAll(regex，replacement)：将regex匹配的内容替换replacement
+        * Pattern与Matcher类
+            * 用于实现从文本中提取有效的信息，比如手机号码，提取之后随意使用
+            * Pattern：就代表了正则表达式
+    
+* Java程序的国际化
+
+    * 国际化：(International...n)，I18N
+    * 实际效果：程序在中国运行，呈现中文界面，在日本运行，呈现日文界面
+    * 国际化机制的本质是：索引，替换
+    * 思路是：
+        * 开发人员写的程序中所有的信息，都不直接用字符串，而是用一个key来代替
+        * 为每个key都提供对应字符串value--资源文件，不同国家需要不同的资源文件
+        * 当程序运行时，Java国际化机制会执行查找、替换。将程序中所有key都替换成对应的value
+    * 国际化的三个类
+        * Locale：代表一个语言、国家环境
+            * <code>getAvailableLocales()</code>：获取Java所支持的全部Locale
+            * <code>getDefault(Locale.Category category)</code>：获取当前电脑的Locale
+            * Locale的两个主要组成部分
+                * language和country
+            * <code>ResoureBundle</code>：用来加载国际化资源文件，加载后代表一个语言资源包
+            * MesageFormat：用于对占位符进行填充
+        * 程序国际化的步骤
+            * 编写国际化资源文件
+                * 从Java9开始，Java允许国际化资源文件中包含非西欧字符，仅需将国际化资源文件保存为UTF-8字符集即可
+                * 在Java9以前，国际化资源文件不能包含非西欧字符，如果国际化资源文件包含了非西欧字符，需要用native2ascii命令进行处理
+                * 国际化资源的文件名有要求
+                * 文件名必须为\<basename>_语言代码\_国家代码.properties
 
 
 
