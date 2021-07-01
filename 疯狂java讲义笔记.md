@@ -1359,13 +1359,85 @@ var CompanyName = ……
             * Locale的两个主要组成部分
                 * language和country
             * <code>ResoureBundle</code>：用来加载国际化资源文件，加载后代表一个语言资源包
-            * MesageFormat：用于对占位符进行填充
+            * MessageFormat：用于对占位符进行填充
         * 程序国际化的步骤
             * 编写国际化资源文件
                 * 从Java9开始，Java允许国际化资源文件中包含非西欧字符，仅需将国际化资源文件保存为UTF-8字符集即可
                 * 在Java9以前，国际化资源文件不能包含非西欧字符，如果国际化资源文件包含了非西欧字符，需要用native2ascii命令进行处理
                 * 国际化资源的文件名有要求
                 * 文件名必须为\<basename>_语言代码\_国家代码.properties
+                * 加载国际化资源文件
+                  * ResourceBundle.getBundle(baseName,Locale)
+                  * 根据key来访问value--Java国际化机制会在此处执行查找、替换
+        * 处理国际化消息中的占位符
+            * MessageFoemat：用于为消息中的占位符填充值
+    * 数值格式化和日期格式化
+        * Format
+            * DateFormat：将Date对象格式化为日期字符串、时间字符串、日期时间字符串
+            * MessageFormat
+            * NumberFormat：可根据locale来生成对应国家的数字字符串
+        * SimpleDateFormat：用起来更简单、方便
+            * 它的功能是：根据格式字符串来将Date对象格式化为字符串，也可将日期字符串恢复成Date对象
+            * 尤其是一些非标准的日期、时间字符串，使用SimpleDateFoemat来解析会非常方便
+    
+* Java的集合类
+
+    * 集合的根接口：Collection
+    * Collection就是体现上面所介绍作为容器的方法
+    * 遍历集合
+        * 用foreach循环遍历
+        * Iterator：遍历器
+            * hasNext()：判断是否有下一个
+            * next()：如果有，取出下一个
+            * remove()：删除刚刚取出的元素
+        * Lambda表达式
+            * forEach(Lambda表达式创建Consumer的实例)
+
+* Set
+
+    * 基本等同于Collection，增加了2个要求
+        * 元素不允许重复
+        * 元素无序
+    * Set的实现类：HashSet和TreeSet
+
+* HashSet
+
+    * 特征
+        * 元素不允许重复
+        * 元素无序
+        * 快速存、取元素
+        * 最大特征就是：“快”--Set最常用的实现类，就是HashSet
+    * HashSet怎么判断两个元素相等
+        * 要求两个对象通过equals比较相等
+        * 还要求两个对象的hashCode()返回值相等
+        * hashCode方法是用于干什么？给HashSet、HashMap等需要Hash算法的程序调用的，作为该对象的标识
+        * 怎么重写HashCode方法
+            * 所有参与equals比较的field，都要参与hashCode的计算
+            * 计算出每个Field的hashCode值，然后将它们累加起来即可(累加之前要乘以31)
+        * 目的是：让equals方法与hashCode方法一致
+        * Java系统提供的类，只要重写了equals方法，一般同时重写hashCode方法
+        * 因此这些类只要通过equals比较返回true，那么它们hashCode值也相等
+    * HashSet为何快？性能选项
+        * HashSet是基于Hash表(本质就是数组)实现的
+        * 数组，在所有数据结构中是存、取速度最快的
+        * 数组变量：保存了数组对象的首地址，第i个元素地址 = 首地址 + i * 元素的大小
+        * 当程序需要取第i个元素时，直接根据计算出来的地址去取值
+        * HashSet存元素的步骤
+            * HashSet会调用元素的hashCode()方法，该方法返回一个int值
+            * HashSet会根据元素的hashCode值计算该元素应该保存在hashSet底层数组的哪个位置
+            * HashSet会到底层数组的该位置去检查，该位置是否为要找的元素
+                * 如果该位置确实保存着要找的元素，直接取出该元素即可
+                * 如果该位置的元素不是我们要找的元素，此时就需要顺着该链，逐个去找
+            * 链越长，查找性能越差
+            * HashSet底层数组越大，形成链条概率越小
+            * HashSet(int initialCapacity , float loadFactor)有两个性能选项
+                * initialCapacity：初始大小。创建HashSet时底层数组的长度，默认值是16
+                * loadFactor：负载因子。默认值是0.75
+                * 当元素个数 / 数组长度 >= 负载因子时，HashSet会将数组长度扩大一倍
+            * 负载因子越大，数组利用率越高(越省内存)，但形成链条概率越大
+            * 负载因子越小，数组利用率越低(越耗内存)，但形成链条概率越小
+
+* TreeSet
 
 
 
