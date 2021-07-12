@@ -1390,6 +1390,7 @@ var CompanyName = ……
             * hasNext()：判断是否有下一个
             * next()：如果有，取出下一个
             * remove()：删除刚刚取出的元素
+        * Enumeration：古老，被Iterator代替
         * Lambda表达式
             * forEach(Lambda表达式创建Consumer的实例)
 
@@ -1436,10 +1437,190 @@ var CompanyName = ……
                 * 当元素个数 / 数组长度 >= 负载因子时，HashSet会将数组长度扩大一倍
             * 负载因子越大，数组利用率越高(越省内存)，但形成链条概率越大
             * 负载因子越小，数组利用率越低(越耗内存)，但形成链条概率越小
+    * LinkedHashSet
+        * LinkedHashSet是HashSet的子类，因此与HashSet功能完全相同
+        * LinkedHashSet会维护链(额外开销、略慢)，用于记住元素的添加顺序--LinkedHashSet是有序的
 
 * TreeSet
 
+    * TreeSet是基于“红黑树”实现的，“红黑树”是半平衡的排序二叉树
+    * 特征
+        * 元素不允许重复
+        * 比HashSet要慢
+        * TreeSet实现了SortedSet，因此TreeSet会对元素按从小到大排列
+        * TreeSet的集合元素是有序：从小到大
+    * TreeSet怎么比较元素的大小
+        * 自然排序：元素本身可以比较大小--元素的类型是否实现了Comparable接口，并实现该接口中的compareTo方法
+        * 定制排序：不要求元素本身可以比较大小，但此时要求创建TreeSet时传入Compartor对象，该对象负责比较元素的大小
+        * 无论如何，TreeSet要求集合元素只能是同一种类型
+    * TreeSet怎么判断两个元素相等
+        * 只要两个元素通过compareTo(自然排序)或compare(定制排序)比较返回0，TreeSet就认为它们是相等的
 
+* List集合
+
+    * 元素可以重复
+    * 元素有序，按添加顺序排列，第一个添加的元素索引为0，第二个添加的元素索引为1....
+    * 形象来看，List相当于一根“竹子”，每节只能装一个对象
+    * Set集合支持的方法，List集合完全支持
+    * 由于List的集合元素是有索引(下标)的，因此程序可通过下标去添加、删除、获取、替换指定位置的元素
+    * List集合有一个额外遍历集合的方法，可根据索引来遍历，让索引从：0~size()-1
+    * Set原来支持的三种遍历方式--此处完全没有问题
+
+* ArrayList
+
+    * List集合最常用的实现，基于数组的实现，因此性能非常好
+    * Vector：被ArrayList代替，线程安全、性能差
+    * ArrayList同样可指定底层数组的长度，如果不指定，长度默认为10
+
+* Deque
+
+    * 代表双端队列，既是栈，也是队列
+    * ArrayDeque也是基于数组实现，因此性能非常好
+    * Stack：被ArrayDeque代替，线程安全、性能差
+    * 主要作为两个场景
+        * 栈
+            * push(元素)
+            * pop()
+            * peek() - 获取最上面的元素，但并不弹出
+        * 队列
+            * offer(元素)：入队
+            * poll()：出队
+            * peek()：获取队头元素，但并不出队
+
+* LinkedList
+
+    * 它是基于链表实现，访问元素时需要逐个比较，因此性能较差
+    * 方法最多，List支持的方法，它都支持，Deque支持的方法，它也都支持
+
+* Map：根接口，地位与Collection是平等的
+
+    * 它的集合元素总是key-value成对出现，每个key-value叫一个Entry
+    * key、value存在单向的1-1的关系，通过key，总可以找到唯一的value
+    * 作用：用于存储具有关联关系的数据
+    * Map的特征
+        * key不允许重复
+        * key是无序的
+    * 所以，Set的集合元素和Map对key的要求，是完全一样的
+    * 实际上，如果把Map的value都当成空处理，此时Map就只有key--这些key就组成了Set集合
+    * 所以Java的Set集合，其实都是靠Map集合实现，将Map的value当成空，只看key部分
+    * 备注：Map不能直接用foreach来遍历、甚至不能直接用iterator遍历
+    * 应该改为对Map的所有key进行遍历，接下来即可通过key来访问value
+
+* TreeMap
+  * TreeMap是基于“红黑树”实现的，“红黑树”是半平衡的排序二叉树
+  * 特征
+    * 元素不允许重复
+    * 比HashMap要慢
+    * TreeMap实现了SortedMap，因此TreeSet会对元素按从小到大排列
+    * TreeMap的key是有序：从小到大
+  * TreeMap怎么比较key的大小
+    * 自然排序：key本身可以比较大小--key的类型是否实现了Comparable接口，并实现该接口中的compareTo方法
+    * 定制排序：不要求key本身可以比较大小，但此时要求创建TreeSet时传入Compartor对象，该对象负责比较key的大小
+    * 无论如何，TreeMap要求key只能是同一种类型
+  * TreeMap怎么判断两个key相等
+    * 只要两个key通过compareTo(自然排序)或compare(定制排序)比较返回0，TreeSet就认为它们是相等的
+  
+* Hashtable与Properties
+  * Hashtable：被HashMap取代了
+    * 老、线程安全、性能差
+    * Hashtable的key、value都不允许为null，否则会报错
+  * HashMap：线程不安全的，性能好；key、value都允许为null
+  * Properties：非常方便读、写属性文件
+    * 继承了Hashtable，它本质就是Map结构
+    * 但它的key、value都是String类型
+    * 相当于一个key、value都是String的Hashtable
+    * 写属性文件：store方法
+    * 读属性文件：load方法
+  
+* Collections
+  * 它所有方法都是静态
+  * reverse：反转List集合
+  * shuffle：随机排列List集合元素
+  * 得到类型安全的集合：checkXxx方法
+  * 得到空集合的方法：emptyXxx方法，这些空集合是不可变的，不能添加元素
+  * 得到只包含一个元素集合的方法：unmodifiableXxx(xxx)：将原来的集合变成不可变的
+  * synchronizedXxx(集合)：用于线程安全的集合，包装成线程安全的集合
+  * 多线程环境下，即使需要使用线程安全的集合，也不需要使用Vector、Stack、Hashtable
+  * 使用synchronizedXxx方法即可将线程不安全的集合，包装成线程安全的集合
+
+* 泛型(generic)
+  * 不用泛型的两个严重问题
+    * 集合不能记住元素的类型，因此集合元素被取出默认当成Object类型，因此总是需要强制类型转换
+    * 集合不能记住元素的类型，因此程序可能不小心将任意类型的元素添加到集合中
+    * 推而广之，其他任意的类可能都存在泛型问题，所以就需要引入泛型
+  * 在集合中使用泛型
+    * 声明集合变量时，集合类型需要用尖括号来指定元素的类型
+    * 创建集合对象时，可使用菱形语法
+  * 泛型的本质
+    * 所有类都有可能支持泛型--包括自定义的类
+    * 泛型的本质：程序在定义类、方法时，用尖括号定义了一个或N个类型形参
+    * 这样当程序去使用这些类或方法时，就可以为这1个或N个类型形参传入实际的类型
+    * 由此可见：泛型的本质，和方法参数有很大的相似之处
+    * 区别为：
+      * 普通参数，需要为之传入实际的值
+      * 泛型参数，需要为之传入实际的类型
+    * 泛型的优势：程序在使用类、或方法时，不仅传入的值可以动态改变，而且连传入的类型都可以动态改变
+  * 自定义泛型类
+    * 方法是：程序为方法定义了几个形参，调用方法时就传入几个实际参数值(实参)
+    * 泛型是：程序为类或方法定义了几个泛型，使用类或方法时就传入几个实际类型(实类型)
+    * 自定义泛型类的语法:
+      * 泛型类，只是用尖括号列出该类需要动态改变的所有类型--泛型形参
+  
+* 原始类型
+
+    * 虽然程序定义了泛型类
+    * 当我们使用泛型类，Java允许根本就不传入实际类型(一定不能有尖括号)，这种用法就叫“原始类型”
+    * 其主要目的是为了与泛型出现之前的代码保持兼容
+    * 原始类型的缺点
+        * 只要程序使用了泛型的原始类型，Java编译器就会报警告
+        * 如果你使用了泛型类的原始类型，Java编译器就没法确定泛型的实际类型，因此Java编译器只能把它们都当成Object处理
+
+* 并不存在的泛型类
+  * List\<String>、List\<Integer>很像List的子接口
+  * 但实际上，List\<String>、LIst\<Integer>并不是真正存在的类！没有对应的class文件，在内存中也没有额外多出来的类
+  * List\<String>、List\<Integer>实际用的类依然是List
+  * ArrayList\<String>和ArrayList\<Integer>看上去区别很大
+    * ArrayList\<String>代表的集合只能添加String元素
+    * ArrayList\<Integer>代表的集合只能添加Integer元素
+    * 其实都是同一个类，ArrayList类，并不存在ArrayList\<String>,ArrayList\<Integer>类
+  
+* 即使A是B的子类，List\<A>也不是List\<B>的子类
+
+    * A是B的子类，那么A[]相当于B[]的子类，但List\<A>并不是List\<B>的子类
+    * 那么A[]相当于B[]的子类是有问题的--必然会导致程序在编译阶段不报错，但运行阶段要报错
+    * 在使用泛型时，Java对此进行了改进，因此即使A是B的子类，List\<A>也不是List\<B>的子类！
+
+* 类型通配符
+
+    * 当使用泛型类，程序应该为泛型形参传入实际的类型参数，但由于不确定应该传入哪种类型，此时就使用？来作为通配符
+    * 使用通配符之后
+        * List<?>类型的变量可以是List\<Integer>，也可是List\<String>，也可是LIst\<Float>...
+        * 通配符的限制
+            * Java程序永远无法确定ist\<?>类型中？所代表的类型
+            * 如果你尝试向List\<?>类型的集合中添加String元素，但List\<?>变量可能引用的List\<Integer>，故程序报错
+            * List\<?>永远不能添加元素，只能取出元素--取出元素时，该元素的类型总是被当成Object处理
+            * List\<?>与List\<Object>是不同的
+                * List\<Integer>、List\<String>...都可被当成List\<?>使用，但不能被当成List\<Object>使用
+            * List\<?>与List(原始类型)也是不同的：
+                * List\<?>依然保留泛型信息，但List是不保留泛型信息的
+                * 因此List\<Integer>、List\<String>...集合被赋值给List变量之后，它们的泛型信息就都丢失了(擦除)
+    
+* 类型通配符的上限
+
+    * 作用：
+        * 依然可以利用类型通配符的优势
+        * 可以保证从集合中取出的元素是某个类型或其任意的子类
+    * 类型通配符上限
+        * List<? extends 上限>
+    * 注意：
+        * 带上限的类型通配符的集合，同样只能取出元素，而且此时取出的元素总是被当成“上限”类型来处理
+        * List<类型>(只要尖括号中类型是上限或其子类)，List<类型>的集合就可被当成List<? extends 上限>使用，用于被赋值
+    * 带上限的通配符，不能添加元素
+        * List<?>只是List<? extends Object>的特例
+    * 不带上限的通配符，其实只是一种特例，相当于它的上限为Object
+    * 总结，带上限的通配符
+        * 只能取出元素，不能添加元素
+        * 取出的元素总被当成上限类型处理
 
 
 
